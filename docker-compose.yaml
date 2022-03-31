@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  node:
+    container_name: smart-edu
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3001:3001
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+    command: npm run start:prod
+    restart: always
+    expose:
+      - 3001
+    environment:
+      # PORT: 3006
+      MONGO_URL: 'mongodb://mongo/smartEdu'
+      # NODE_ENV: 'production'
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ../dataMongo/:/data/db
+
+volumes:
+  dataMongo:
